@@ -24,7 +24,7 @@ public class CustomerServiceClient {
 
     public Mono<CustomerInformation> getCustomerInformation(Integer customerId) {
         return this.client.get()
-                .uri("customers/{customerId}", customerId)
+                .uri("/customers/{customerId}", customerId)
                 .retrieve()
                 .bodyToMono(CustomerInformation.class)
                 .onErrorResume(WebClientResponseException.NotFound.class, ex -> ApplicationExceptions.customerNotFound(customerId));
@@ -32,7 +32,7 @@ public class CustomerServiceClient {
 
     public Mono<StockTradeResponse> trade(Integer customerId, StockTradeRequest request) {
         return this.client.post()
-                .uri("customers/{customerId}/trade")
+                .uri("/customers/{customerId}/trade", customerId)
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(StockTradeResponse.class)
